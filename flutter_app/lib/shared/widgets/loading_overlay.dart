@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../core/theme/app_theme.dart';
 
+/// Widget d'overlay de chargement avec design professionnel
 class LoadingOverlay extends StatelessWidget {
   final bool isLoading;
   final Widget child;
@@ -39,9 +39,14 @@ class LoadingOverlay extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SpinKitFadingCircle(
-                      color: AppTheme.primaryColor,
-                      size: 50,
+                    // Indicateur de chargement Material Design
+                    const SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3,
+                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+                      ),
                     ),
                     if (message != null) ...[
                       const SizedBox(height: 16),

@@ -5,7 +5,7 @@ class AppConstants {
   static const String appVersion = '1.0.0';
   static const String appDescription = 'Réservation de salles de réunion professionnelle';
   
-  // Configuration de l'API - URL du backend
+  // Configuration de l'API - URL du backend (MODIFIEZ SELON VOTRE SERVEUR)
   static const String baseUrl = 'http://localhost:3000/api';
   
   // Clés de stockage local

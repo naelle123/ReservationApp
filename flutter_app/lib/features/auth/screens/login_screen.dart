@@ -6,8 +6,8 @@ import '../../../core/theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../../../shared/widgets/loading_overlay.dart';
 
-/// Écran de connexion avec design professionnel
-/// Utilise uniquement des icônes Material Design intégrées
+/// Écran de connexion avec validation robuste et gestion d'erreurs
+/// Compatible 100% avec l'API backend Node.js/Express
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -20,6 +20,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isFormValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Écouter les changements pour valider le formulaire en temps réel
+    _emailController.addListener(_validateForm);
+    _passwordController.addListener(_validateForm);
+  }
 
   @override
   void dispose() {
@@ -28,8 +37,34 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  /// Validation du formulaire en temps réel
+  void _validateForm() {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    
+    final isValid = email.isNotEmpty && 
+                   password.isNotEmpty && 
+                   _isValidEmail(email) && 
+                   password.length >= AppConstants.minPasswordLength;
+    
+    if (isValid != _isFormValid) {
+      setState(() {
+        _isFormValid = isValid;
+      });
+    }
+  }
+
+  /// Validation d'email
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
+  /// Tentative de connexion avec gestion d'erreurs
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
+
+    // Nettoyer les erreurs précédentes
+    context.read<AuthProvider>().clearError();
 
     final authProvider = context.read<AuthProvider>();
     final success = await authProvider.login(
@@ -48,6 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  /// Remplissage automatique avec les comptes de test
+  void _fillTestAccount(String email, String password) {
+    _emailController.text = email;
+    _passwordController.text = password;
+    _validateForm();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const SizedBox(height: 60),
                     
-                    // Logo et titre avec icône Material Design
+                    // Logo et titre
                     _buildHeader(),
                     
                     const SizedBox(height: 60),
@@ -88,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildHeader() {
     return Column(
       children: [
-        // Logo utilisant une icône Material Design intégrée
+        // Logo avec icône Material Design
         Container(
           width: 100,
           height: 100,
@@ -104,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
           child: const Icon(
-            Icons.meeting_room, // Icône Material Design intégrée
+            Icons.meeting_room,
             size: 50,
             color: Colors.white,
           ),
@@ -151,39 +193,41 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 32),
               
-              // Email avec icône Material Design
+              // Email avec validation en temps réel
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Email',
-                  prefixIcon: Icon(Icons.email_outlined), // Icône Material Design
+                  prefixIcon: const Icon(Icons.email_outlined),
+                  errorMaxLines: 2,
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Veuillez saisir votre email';
                   }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                    return 'Email invalide';
+                  if (!_isValidEmail(value.trim())) {
+                    return 'Format d\'email invalide';
                   }
                   return null;
                 },
+                onChanged: (value) => _validateForm(),
               ),
               const SizedBox(height: 16),
               
-              // Mot de passe avec icônes Material Design
+              // Mot de passe avec validation
               TextFormField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) => _login(),
+                onFieldSubmitted: (_) => _isFormValid ? _login() : null,
                 decoration: InputDecoration(
                   labelText: 'Mot de passe',
-                  prefixIcon: const Icon(Icons.lock_outlined), // Icône Material Design
+                  prefixIcon: const Icon(Icons.lock_outlined),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off, // Icônes Material Design
+                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
                     ),
                     onPressed: () {
                       setState(() {
@@ -191,6 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                   ),
+                  errorMaxLines: 2,
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -201,9 +246,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                   return null;
                 },
+                onChanged: (value) => _validateForm(),
               ),
               
-              // Erreur
+              // Affichage des erreurs
               if (authProvider.error != null) ...[
                 const SizedBox(height: 16),
                 Container(
@@ -216,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     children: [
                       Icon(
-                        Icons.error_outline, // Icône Material Design
+                        Icons.error_outline,
                         color: AppTheme.errorColor,
                         size: 20,
                       ),
@@ -237,11 +283,12 @@ class _LoginScreenState extends State<LoginScreen> {
               
               const SizedBox(height: 32),
               
-              // Bouton de connexion
+              // Bouton de connexion avec état
               ElevatedButton(
-                onPressed: authProvider.isLoading ? null : _login,
+                onPressed: (authProvider.isLoading || !_isFormValid) ? null : _login,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: _isFormValid ? null : Colors.grey,
                 ),
                 child: authProvider.isLoading
                     ? const SizedBox(
@@ -271,7 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               children: [
                 Icon(
-                  Icons.info_outline, // Icône Material Design
+                  Icons.info_outline,
                   color: AppTheme.primaryColor,
                   size: 20,
                 ),
@@ -290,14 +337,14 @@ class _LoginScreenState extends State<LoginScreen> {
               'Administrateur',
               'admin@example.com',
               'admin123',
-              Icons.admin_panel_settings, // Icône Material Design
+              Icons.admin_panel_settings,
             ),
             const SizedBox(height: 8),
             _buildTestAccount(
               'Utilisateur',
               'user@example.com',
               'user123',
-              Icons.person, // Icône Material Design
+              Icons.person,
             ),
           ],
         ),
@@ -307,17 +354,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildTestAccount(String role, String email, String password, IconData icon) {
     return InkWell(
-      onTap: () {
-        _emailController.text = email;
-        _passwordController.text = password;
-      },
+      onTap: () => _fillTestAccount(email, password),
       borderRadius: BorderRadius.circular(8),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Row(
           children: [
             Icon(
-              icon, // Icône Material Design passée en paramètre
+              icon,
               size: 16,
               color: AppTheme.textSecondary,
             ),
@@ -342,7 +386,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Icon(
-              Icons.touch_app, // Icône Material Design
+              Icons.touch_app,
               size: 16,
               color: AppTheme.textTertiary,
             ),

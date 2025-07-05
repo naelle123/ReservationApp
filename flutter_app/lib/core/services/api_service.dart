@@ -6,6 +6,7 @@ import '../constants/app_constants.dart';
 import '../exceptions/api_exception.dart';
 
 /// Service API centralisé pour toutes les communications avec le backend
+/// Compatible 100% avec l'API Node.js/Express
 class ApiService {
   late final Dio _dio;
   final Logger _logger = Logger(
@@ -110,7 +111,7 @@ class ApiService {
     _logger.i('🔓 Token d\'authentification supprimé');
   }
 
-  /// Gestionnaire centralisé des requêtes avec gestion d'erreurs
+  /// Gestionnaire centralisé des requêtes avec gestion d'erreurs robuste
   Future<Map<String, dynamic>> _handleRequest(Future<Response> request) async {
     try {
       final response = await request;
@@ -199,12 +200,12 @@ class ApiService {
 
   // ==================== ENDPOINTS D'AUTHENTIFICATION ====================
 
-  /// Connexion utilisateur
+  /// Connexion utilisateur - Compatible avec l'API backend
   Future<Map<String, dynamic>> login(String email, String password) async {
     _logger.i('🔐 Tentative de connexion pour: $email');
     return _handleRequest(_dio.post('/auth/login', data: {
       'email': email,
-      'mot_de_passe': password,
+      'mot_de_passe': password, // Utilise le nom de champ du backend
     }));
   }
 

@@ -38,22 +38,27 @@ void main() async {
   // Initialisation de la localisation française
   await initializeDateFormatting('fr_FR', null);
   
-  // Initialisation des services
-  final storageService = StorageService();
-  await storageService.init();
-  
-  final apiService = ApiService();
-  final authService = AuthService(apiService, storageService);
-  
-  runApp(MeetingRoomApp(
-    authService: authService,
-    apiService: apiService,
-    storageService: storageService,
-  ));
+  // Initialisation des services avec gestion d'erreurs
+  try {
+    final storageService = StorageService();
+    await storageService.init();
+    
+    final apiService = ApiService();
+    final authService = AuthService(apiService, storageService);
+    
+    runApp(MeetingRoomApp(
+      authService: authService,
+      apiService: apiService,
+      storageService: storageService,
+    ));
+  } catch (e) {
+    // En cas d'erreur critique, afficher un écran d'erreur
+    runApp(ErrorApp(error: e.toString()));
+  }
 }
 
-/// Application principale avec configuration des providers et du thème
-/// Utilise Google Fonts téléchargées automatiquement (pas d'assets locaux)
+/// Application principale avec configuration robuste des providers
+/// Compatible 100% avec l'API backend Node.js/Express
 class MeetingRoomApp extends StatelessWidget {
   final AuthService authService;
   final ApiService apiService;
@@ -95,7 +100,7 @@ class MeetingRoomApp extends StatelessWidget {
             title: AppConstants.appName,
             debugShowCheckedModeBanner: false,
             
-            // Configuration du thème avec Google Fonts téléchargées automatiquement
+            // Configuration du thème avec Google Fonts
             theme: AppTheme.lightTheme.copyWith(
               textTheme: GoogleFonts.interTextTheme(
                 AppTheme.lightTheme.textTheme,
@@ -129,6 +134,85 @@ class MeetingRoomApp extends StatelessWidget {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+/// Application d'erreur en cas de problème critique
+class ErrorApp extends StatelessWidget {
+  final String error;
+
+  const ErrorApp({super.key, required this.error});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Erreur - ${AppConstants.appName}',
+      home: Scaffold(
+        backgroundColor: Colors.red[50],
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  size: 64,
+                  color: Colors.red[600],
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'Erreur d\'initialisation',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red[800],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Une erreur s\'est produite lors du démarrage de l\'application.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.red[700],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.red[100],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.red[300]!),
+                  ),
+                  child: Text(
+                    error,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.red[800],
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    // Redémarrer l'application
+                    SystemNavigator.pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red[600],
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Redémarrer'),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
