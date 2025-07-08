@@ -18,6 +18,11 @@ interface AuthStore extends AuthState {
   isUser: () => boolean;
 }
 
+// Définir le token dans le mock si disponible
+const initializeMockAuth = (token: string) => {
+  apiService.setAuthToken(token);
+};
+
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set, get) => ({
@@ -57,6 +62,7 @@ export const useAuthStore = create<AuthStore>()(
 
           // Sauvegarder le token et l'utilisateur
           apiService.setAuthToken(response.token);
+          
           
           set({
             user: response.user,
@@ -179,6 +185,7 @@ if (typeof window !== 'undefined') {
   const state = useAuthStore.getState();
   if (state.token) {
     apiService.setAuthToken(state.token);
+    initializeMockAuth(state.token);
     // Vérifier la validité du token
     state.refreshUser();
   }

@@ -20,6 +20,7 @@ import LoadingOverlay from '@/components/ui/LoadingOverlay';
 import PWAInstallPrompt from '@/components/PWAInstallPrompt';
 import PWAUpdatePrompt from '@/components/PWAUpdatePrompt';
 import OfflineIndicator from '@/components/OfflineIndicator';
+import BackendStatusIndicator from '@/components/BackendStatusIndicator';
 import { format, isToday, isFuture } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -88,6 +89,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <OfflineIndicator />
+      <BackendStatusIndicator />
       <Navbar />
       
       <LoadingOverlay isLoading={isLoading}>

@@ -1,0 +1,63 @@
+{
+  "reservation_stats": {
+    "statistiques": {
+      "total_reservations": 25,
+      "reservations_actives": 12,
+      "reservations_annulees": 3,
+      "reservations_futures": 8,
+      "reservations_aujourd_hui": 2
+    },
+    "salles_populaires": [
+      {
+        "nom": "Salle de Conférence A",
+        "nombre_reservations": 8
+      },
+      {
+        "nom": "Salle de Réunion B",
+        "nombre_reservations": 6
+      },
+      {
+        "nom": "Salle Exécutive D",
+        "nombre_reservations": 5
+      },
+      {
+        "nom": "Espace Coworking E",
+        "nombre_reservations": 4
+      },
+      {
+        "nom": "Salle de Créativité C",
+        "nombre_reservations": 2
+      }
+    ]
+  },
+  "user_stats": {
+    "statistiques": {
+      "total_utilisateurs": 15,
+      "total_admins": 3,
+      "total_utilisateurs_normaux": 12,
+      "nouveaux_utilisateurs_30j": 5
+    },
+    "utilisateurs_actifs": [
+      {
+        "nom": "Jean Dupont",
+        "email": "user@example.com",
+        "nombre_reservations": 8
+      },
+      {
+        "nom": "Marie Martin",
+        "email": "marie.martin@example.com",
+        "nombre_reservations": 6
+      },
+      {
+        "nom": "Pierre Durand",
+        "email": "pierre.durand@example.com",
+        "nombre_reservations": 4
+      },
+      {
+        "nom": "Sophie Bernard",
+        "email": "sophie.bernard@example.com",
+        "nombre_reservations": 3
+      }
+    ]
+  }
+}

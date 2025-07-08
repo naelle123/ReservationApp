@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "nom": "Administrateur Principal",
+      "email": "admin@example.com",
+      "role": "admin",
+      "telephone": "+237690000000",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-15T10:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "nom": "Jean Dupont",
+      "email": "user@example.com",
+      "role": "utilisateur",
+      "telephone": "+237655000000",
+      "created_at": "2024-01-02T00:00:00.000Z",
+      "updated_at": "2024-01-10T14:20:00.000Z"
+    },
+    {
+      "id": 3,
+      "nom": "Marie Martin",
+      "email": "marie.martin@example.com",
+      "role": "utilisateur",
+      "telephone": "+237677123456",
+      "created_at": "2024-01-03T00:00:00.000Z",
+      "updated_at": "2024-01-12T09:15:00.000Z"
+    },
+    {
+      "id": 4,
+      "nom": "Pierre Durand",
+      "email": "pierre.durand@example.com",
+      "role": "utilisateur",
+      "telephone": "+237688987654",
+      "created_at": "2024-01-04T00:00:00.000Z",
+      "updated_at": "2024-01-14T16:45:00.000Z"
+    },
+    {
+      "id": 5,
+      "nom": "Sophie Bernard",
+      "email": "sophie.bernard@example.com",
+      "role": "admin",
+      "telephone": "+237699876543",
+      "created_at": "2024-01-05T00:00:00.000Z",
+      "updated_at": "2024-01-13T11:30:00.000Z"
+    }
+  ]
+}

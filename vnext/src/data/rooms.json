@@ -1,0 +1,67 @@
+{
+  "salles": [
+    {
+      "id": 1,
+      "nom": "Salle de Conférence A",
+      "capacite": 20,
+      "statut": "disponible",
+      "description": "Grande salle avec projecteur et système audio professionnel",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-10T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "nom": "Salle de Réunion B",
+      "capacite": 8,
+      "statut": "disponible",
+      "description": "Salle moyenne pour réunions d'équipe avec tableau blanc",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-08T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "nom": "Salle de Créativité C",
+      "capacite": 6,
+      "statut": "disponible",
+      "description": "Espace collaboratif avec tableau blanc et matériel de brainstorming",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-12T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "nom": "Salle Exécutive D",
+      "capacite": 12,
+      "statut": "disponible",
+      "description": "Salle haut de gamme pour réunions importantes avec équipement premium",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-14T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "nom": "Espace Coworking E",
+      "capacite": 15,
+      "statut": "disponible",
+      "description": "Espace ouvert pour travail collaboratif avec zones modulables",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-11T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "nom": "Salle Formation F",
+      "capacite": 25,
+      "statut": "maintenance",
+      "description": "Grande salle de formation avec équipement multimédia",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 7,
+      "nom": "Bureau Privé G",
+      "capacite": 4,
+      "statut": "hors_service",
+      "description": "Petit bureau pour réunions confidentielles",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-13T00:00:00.000Z"
+    }
+  ]
+}
