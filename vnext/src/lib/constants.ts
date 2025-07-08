@@ -6,7 +6,7 @@ export const APP_CONSTANTS = {
   APP_DESCRIPTION: 'Réservation de salles de réunion professionnelle',
   
   // Configuration de l'API - URL du backend
-  API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+  API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://reservationapp-0o9k.onrender.com/api',
   
   // Clés de stockage local
   TOKEN_KEY: 'auth_token',
