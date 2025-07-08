@@ -17,6 +17,9 @@ import Navbar from '@/components/layout/Navbar';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import LoadingOverlay from '@/components/ui/LoadingOverlay';
+import PWAInstallPrompt from '@/components/PWAInstallPrompt';
+import PWAUpdatePrompt from '@/components/PWAUpdatePrompt';
+import OfflineIndicator from '@/components/OfflineIndicator';
 import { format, isToday, isFuture } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -84,6 +87,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <OfflineIndicator />
       <Navbar />
       
       <LoadingOverlay isLoading={isLoading}>
@@ -263,6 +267,10 @@ export default function DashboardPage() {
           </div>
         </main>
       </LoadingOverlay>
+
+      {/* Composants PWA */}
+      <PWAInstallPrompt />
+      <PWAUpdatePrompt />
     </div>
   );
 }
